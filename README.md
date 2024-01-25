@@ -1,3 +1,3 @@
 # chip-8
 
-A chip-8 interpreter built by following this guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+A CHIP-8 emulator (interpreter) based on this guie: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
