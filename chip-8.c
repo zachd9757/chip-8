@@ -30,7 +30,7 @@ const char* font[] = {
  * Initializes the interpreter.
  */
 void init(struct CHIP8** chip) {
-    // Init memory
+    // Initialize memory
     *chip = (struct CHIP8*) calloc(1, sizeof(struct CHIP8*));
     if (*chip == NULL) {
         perror("Could not allocate memory");
@@ -45,5 +45,5 @@ void init(struct CHIP8** chip) {
         sscanf(font[i], "%hhx", &(*chip)->memory[i + FONT_OFFSET]);
     }
 
-    
+    //TODO: Initialize stack
 }
