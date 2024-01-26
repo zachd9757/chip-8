@@ -7,5 +7,5 @@ A CHIP-8 emulator (interpreter) written in C by Zach DeShaw.
 - *make clean* to remove output
 
 ## Specification
-Original Guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
-Specification Reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
+- Original Guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+- Specification Reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
