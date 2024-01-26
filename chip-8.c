@@ -1,8 +1,10 @@
 // Author: Zach DeShaw
 // A CHIP-8 emulator (interpreter) based on this guie: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+// Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "chip-8.h"
 
 const char* font[] = {
@@ -24,7 +26,7 @@ const char* font[] = {
     "0xF0", "0x80", "0xF0", "0x80", "0x80"  // F
 };
 
-/* 
+/* init
  * Initializes the interpreter.
  */
 void init(struct CHIP8** chip) {
@@ -42,16 +44,6 @@ void init(struct CHIP8** chip) {
         //TODO: Find out why the type of memory[x] is wrong type
         sscanf(font[i], "%hhx", &(*chip)->memory[i + FONT_OFFSET]);
     }
+
+    
 }
-
-/* 
- * Entry point of the emulator.
- */
-// int main() {
-//     // Initialize CHIP8
-//     struct CHIP8* chip;
-//     init(&chip);
-//     printf("%x\n", chip->memory[0x050]);
-
-//     return 0;
-// }

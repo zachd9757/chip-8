@@ -18,10 +18,13 @@ int test1() {
 }
 
 
+/*==============    Test Cases    ==============*/
 /*============== Helper Functions ==============*/
 
 
-/* 
+/*============== Helper Functions ==============*/
+
+/* main
  * Executes all of the tests and returns information on how many passed.
  */
 int main() {

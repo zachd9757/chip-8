@@ -10,11 +10,25 @@
 #define DISPLAY_WIDTH ( 64 )
 #define DISPLAY_HEIGHT ( 32 )
 
+// Stack
+#define STACK_SIZE ( 16 )
+
 /*==============      Structs     ==============*/
+// CHIP-8 emulator
 struct CHIP8 {
     unsigned char memory[4096];     // RAM, should be writeable
     int pc;                         // Program counter
 };
 
+// Stack
+struct stack {
+    // 16 16-bit values
+    uint16_t values[STACK_SIZE];
+};
+
+/*==============      Structs     ==============*/
 /*==============    Functions     ===============*/
+// CHIP-8 emulator
 void init(struct CHIP8** chip);
+
+// Stack

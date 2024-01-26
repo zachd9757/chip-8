@@ -6,3 +6,5 @@
 - *make clean* to remove output
 
 A CHIP-8 emulator (interpreter) based on this guie: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+
+Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
