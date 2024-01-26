@@ -2,9 +2,6 @@
 // A CHIP-8 emulator (interpreter) based on this guie: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 // Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include "chip-8.h"
 
 const char* font[] = {
@@ -29,7 +26,7 @@ const char* font[] = {
 /* init
  * Initializes the interpreter.
  */
-void init(struct CHIP8** chip) {
+void chip_init(struct CHIP8** chip) {
     // Initialize memory
     *chip = (struct CHIP8*) calloc(1, sizeof(struct CHIP8*));
     if (*chip == NULL) {
@@ -41,9 +38,37 @@ void init(struct CHIP8** chip) {
     size_t num_font_hexes = sizeof(font) / sizeof(font[0]);
 
     for (size_t i = 0; i < num_font_hexes; i++) {
-        //TODO: Find out why the type of memory[x] is wrong type
         sscanf(font[i], "%hhx", &(*chip)->memory[i + FONT_OFFSET]);
     }
 
-    //TODO: Initialize stack
+    // Initialize stack
+    for (size_t i = 0; i < STACK_SIZE; i++) {
+        (*chip)->stack.values[i] = EMPTY_VAL;
+    }
+}
+
+/* stack_pop
+ * Returns and removes the top value in the stack.
+ */
+uint16_t stack_pop(uint16_t** stack) {
+    //TODO:
+
+}
+
+/* stack_push
+ * Pushes value on to the top of the stack. Returns 0 on success and -1 on failure.
+ */
+int stack_push(struct chipstack** stack, uint16_t value) {
+    // Find index to place value
+    for (size_t i = 0; i < STACK_SIZE; i++) {
+        // If empty slot found, place the value
+        if (&(*stack)->values[i] == EMPTY_VAL) {
+            (*stack)->values[i] = value;
+            (*stack)->top = i;
+            return 0;
+        }
+    }
+
+    // Stack overflow
+    return -1;
 }
