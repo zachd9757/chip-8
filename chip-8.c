@@ -27,11 +27,12 @@ const char* font[] = {
 /* 
  * Initializes the interpreter.
  */
-void init(struct CHIP8* chip) {
+void init(struct CHIP8** chip) {
     // Init memory
-    chip = (struct CHIP8*) malloc(sizeof(struct CHIP8*));
-    if (chip == NULL) {
+    *chip = (struct CHIP8*) calloc(1, sizeof(struct CHIP8*));
+    if (*chip == NULL) {
         perror("Could not allocate memory");
+        exit(EXIT_FAILURE);
     }
 
     // Store font in memory
@@ -39,16 +40,18 @@ void init(struct CHIP8* chip) {
 
     for (size_t i = 0; i < num_font_hexes; i++) {
         //TODO: Find out why the type of memory[x] is wrong type
-        sscanf(font[i], "%hhx", chip->memory[i + FONT_OFFSET]);
+        sscanf(font[i], "%hhx", &(*chip)->memory[i + FONT_OFFSET]);
     }
 }
 
 /* 
  * Entry point of the emulator.
  */
-int main() {
-    // Initialize CHIP8
-    struct CHIP8* chip;
-    init(chip);
-    printf("%x\n", chip->memory[0x050]);
-}
+// int main() {
+//     // Initialize CHIP8
+//     struct CHIP8* chip;
+//     init(&chip);
+//     printf("%x\n", chip->memory[0x050]);
+
+//     return 0;
+// }
