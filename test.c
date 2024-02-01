@@ -6,7 +6,7 @@
 #include <time.h>
 #include "chip-8.h"
 
-#define NUM_TESTS ( 1 )
+#define NUM_TESTS ( 2 )
 
 /*==============    Test Cases    ==============*/
 // Tests chip_init
@@ -21,18 +21,39 @@ int test0() {
 
     // Check that stack is set up properly
     for (size_t i = 0; i < STACK_SIZE; i++) {
-        assert(chip->stack->values[i] == EMPTY_VAL);
+        assert(chip->stack->values[i] == STACK_EMPTY);
     }
 
     return 0;
 }
 
+// Tests stack push and pop
+int test1() {
+    // Initialize CHIP8
+    Chip* chip;
+    chip_init(&chip);
+
+    // Push values and check
+    stack_push(&(chip->stack), 0x1A2B);
+    stack_push(&(chip->stack), 0xFFFF);
+    stack_push(&(chip->stack), 0x1010);
+    assert(chip->stack->values[0] == 0x1A2B);
+    assert(chip->stack->values[1] == 0xFFFF);
+    assert(chip->stack->values[2] == 0x1010);
+
+    // Pop values and check
+    uint16_t val0 = stack_pop(&(chip->stack));
+    uint16_t val1 = stack_pop(&(chip->stack));
+    uint16_t val2 = stack_pop(&(chip->stack));
+    assert(val0 == (uint16_t) 0x1010);
+    assert(val1 == (uint16_t) 0xFFFF);
+    assert(val2 == (uint16_t) 0x1A2B);
+
+    return 0;
+}
 
 /*==============    Test Cases    ==============*/
-/*============== Helper Functions ==============*/
-
-
-/*============== Helper Functions ==============*/
+/*==============       Main       ==============*/
 
 /* main
  * Executes all of the tests and returns information on how many passed.
@@ -45,9 +66,9 @@ int main() {
 
     int (*ptr[NUM_TESTS])();
     ptr[0] = test0;
-    // ptr[1] = test1;
+    ptr[1] = test1;
 
-    printf("Beginning test run -- test.c\n");
+    printf("\nBEGINNING TEST EXECUTION -- test.c\n");
 
     // Record start time
     start = clock();
@@ -78,3 +99,5 @@ int main() {
 
     return 0;
 }
+
+/*==============       Main       ==============*/

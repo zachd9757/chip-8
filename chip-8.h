@@ -17,7 +17,7 @@
 
 // Stack
 #define STACK_SIZE      ( (size_t)16 )
-#define EMPTY_VAL       ( -1 )
+#define STACK_EMPTY     ( 0x0000 )
 
 /*============== Global Variables ==============*/
 /*==============      Structs     ==============*/
@@ -25,14 +25,14 @@
 // Stack
 typedef struct chipstack {
     uint16_t values[STACK_SIZE];    // Stack -- 16 16-bit entries
-    int top;                  // Index of top of stack
+    int top;                        // Index of top of stack
 } Stack;
 
 // CHIP-8 emulator
 typedef struct CHIP8 {
     unsigned char memory[4096];     // RAM -- should be writeable
     uint16_t pc;                    // Program counter
-    Stack* stack;         //TODO: Make this ptr?
+    Stack* stack;
 } Chip;
 
 /*==============      Structs     ==============*/

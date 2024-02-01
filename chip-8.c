@@ -28,7 +28,7 @@ const char* font[] = {
  */
 void chip_init(struct CHIP8** chip) {
     // Initialize memory
-    *chip = (struct CHIP8*) calloc(1, sizeof(struct CHIP8*));
+    *chip = (struct CHIP8*) malloc(sizeof(struct CHIP8*));
     if (*chip == NULL) {
         perror("Could not allocate memory");
         exit(EXIT_FAILURE);
@@ -42,8 +42,11 @@ void chip_init(struct CHIP8** chip) {
     }
 
     // Initialize stack
+    (*chip)->stack = malloc(sizeof(Stack));
+    (*chip)->stack->top = -1;
+    
     for (size_t i = 0; i < STACK_SIZE; i++) {
-        (*chip)->stack->values[i] = EMPTY_VAL; //TODO: fix segfault here
+        (*chip)->stack->values[i] = STACK_EMPTY;
     }
 }
 
@@ -55,10 +58,12 @@ uint16_t stack_pop(Stack** stack) {
     uint16_t result = (*stack)->values[(*stack)->top];
 
     // Remove element
-    (*stack)->values[(*stack)->top] = EMPTY_VAL;
+    (*stack)->values[(*stack)->top] = STACK_EMPTY;
 
     // Update stack top
     (*stack)->top--;
+
+    return result;
 }
 
 /* stack_push
@@ -68,7 +73,7 @@ int stack_push(Stack** stack, uint16_t value) {
     // Find index to place value
     for (size_t i = 0; i < STACK_SIZE; i++) {
         // If empty slot found, place the value
-        if ((*stack)->values[i] == EMPTY_VAL) {
+        if ((*stack)->values[i] == STACK_EMPTY) {
             (*stack)->values[i] = value;
             // Update stack top
             (*stack)->top++;
