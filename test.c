@@ -6,13 +6,23 @@
 #include <time.h>
 #include "chip-8.h"
 
+#define NUM_TESTS ( 1 )
+
 /*==============    Test Cases    ==============*/
-int test1() {
+// Tests chip_init
+int test0() {
     // Initialize CHIP8
-    struct CHIP8* chip;
-    init(&chip);
+    Chip* chip;
+    chip_init(&chip);
+
+    // Check that font is set up properly
     assert(chip->memory[0x050] == 0xF0);
     assert(chip->memory[0x09F] == 0x80);
+
+    // Check that stack is set up properly
+    for (size_t i = 0; i < STACK_SIZE; i++) {
+        assert(chip->stack->values[i] == EMPTY_VAL);
+    }
 
     return 0;
 }
@@ -28,10 +38,14 @@ int test1() {
  * Executes all of the tests and returns information on how many passed.
  */
 int main() {
-    int num_tests_passed, result = 0;
+    int num_tests_passed, test_result;
 
     clock_t start, end;
     double cpu_time_used;
+
+    int (*ptr[NUM_TESTS])();
+    ptr[0] = test0;
+    // ptr[1] = test1;
 
     printf("Beginning test run -- test.c\n");
 
@@ -43,8 +57,10 @@ int main() {
     }
 
     // Execute tests
-    if (test1() == 0) {
-        num_tests_passed++;
+    for(int i = 0; i < NUM_TESTS; i++) {
+        if ((test_result = (*ptr[i])()) == 0) {
+            num_tests_passed++;
+        }
     }
 
     // Record end time

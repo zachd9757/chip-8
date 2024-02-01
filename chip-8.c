@@ -1,5 +1,5 @@
 // Author: Zach DeShaw
-// A CHIP-8 emulator (interpreter) based on this guie: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+// A CHIP-8 emulator (interpreter) based on this guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 // Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
 
 #include "chip-8.h"
@@ -43,28 +43,35 @@ void chip_init(struct CHIP8** chip) {
 
     // Initialize stack
     for (size_t i = 0; i < STACK_SIZE; i++) {
-        (*chip)->stack.values[i] = EMPTY_VAL;
+        (*chip)->stack->values[i] = EMPTY_VAL; //TODO: fix segfault here
     }
 }
 
 /* stack_pop
  * Returns and removes the top value in the stack.
  */
-uint16_t stack_pop(uint16_t** stack) {
-    //TODO:
+uint16_t stack_pop(Stack** stack) {
+    // Grab value
+    uint16_t result = (*stack)->values[(*stack)->top];
 
+    // Remove element
+    (*stack)->values[(*stack)->top] = EMPTY_VAL;
+
+    // Update stack top
+    (*stack)->top--;
 }
 
 /* stack_push
- * Pushes value on to the top of the stack. Returns 0 on success and -1 on failure.
+ * Pushes value on to the top of the stack. Returns 0 on success and -1 on failure (overflow).
  */
-int stack_push(struct chipstack** stack, uint16_t value) {
+int stack_push(Stack** stack, uint16_t value) {
     // Find index to place value
     for (size_t i = 0; i < STACK_SIZE; i++) {
         // If empty slot found, place the value
-        if (&(*stack)->values[i] == EMPTY_VAL) {
+        if ((*stack)->values[i] == EMPTY_VAL) {
             (*stack)->values[i] = value;
-            (*stack)->top = i;
+            // Update stack top
+            (*stack)->top++;
             return 0;
         }
     }
