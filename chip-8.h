@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <pthread.h>
 
 /*============== Global Variables ==============*/
 
@@ -16,8 +18,11 @@
 #define DISPLAY_HEIGHT  ( 32 )
 
 // Stack
-#define STACK_SIZE      ( (size_t)16 )
+#define STACK_SIZE      ( (size_t) 16 )
 #define STACK_EMPTY     ( 0x0000 )
+
+// Timers
+#define TIMER_ZERO      ( 0 )
 
 /*============== Global Variables ==============*/
 /*==============      Structs     ==============*/
@@ -28,11 +33,22 @@ typedef struct chipstack {
     int top;                        // Index of top of stack
 } Stack;
 
-// CHIP-8 emulator
+// CHIP-8 interpreter
 typedef struct CHIP8 {
     unsigned char memory[4096];     // RAM -- should be writeable
     uint16_t pc;                    // Program counter
     Stack* stack;
+    pthread_mutex_t dt_mutex;
+    pthread_mutex_t st_mutex;
+    // The delay timer is active whenever the delay timer register (DT)
+    // is non-zero. This timer does nothing more than subtract 1 from the
+    // value of DT at a rate of 60Hz. When DT reaches 0, it deactivates.
+    int dt;
+    // The sound timer is active whenever the sound timer register (ST) is
+    // non-zero. This timer also decrements at a rate of 60Hz, however, as long
+    // as ST's value is greater than zero, the Chip-8 buzzer will sound. When
+    // ST reaches zero, the sound timer deactivates.
+    int st;
 } Chip;
 
 /*==============      Structs     ==============*/
@@ -44,5 +60,9 @@ void chip_init(struct CHIP8** chip);
 // Stack
 uint16_t stack_pop(Stack** stack);
 int stack_push(Stack** stack, uint16_t value);
+
+// Timers
+int delay_timer(Chip** chip);
+int sound_timer(Chip** chip);
 
 /*==============    Functions     ==============*/

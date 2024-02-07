@@ -1,5 +1,5 @@
 // Author: Zach DeShaw
-// A CHIP-8 emulator (interpreter) based on this guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+// A CHIP-8 interpreter based on this guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 // Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
 
 #include "chip-8.h"
@@ -26,7 +26,7 @@ const char* font[] = {
 /* init
  * Initializes the interpreter.
  */
-void chip_init(struct CHIP8** chip) {
+void chip_init(Chip** chip) {
     // Initialize memory
     *chip = (struct CHIP8*) malloc(sizeof(struct CHIP8*));
     if (*chip == NULL) {
@@ -48,6 +48,15 @@ void chip_init(struct CHIP8** chip) {
     for (size_t i = 0; i < STACK_SIZE; i++) {
         (*chip)->stack->values[i] = STACK_EMPTY;
     }
+
+    // Initialize timers
+    pthread_mutex_init((*chip)->dt_mutex, NULL);
+    pthread_mutex_init((*chip)->st_mutex, NULL);
+    //TODO: error check mutex inits
+    (*chip)->dt = 0;
+    (*chip)->st = 0;
+
+    //TODO: create threads
 }
 
 /* stack_pop
@@ -83,4 +92,18 @@ int stack_push(Stack** stack, uint16_t value) {
 
     // Stack overflow
     return -1;
+}
+
+/* delay_timer (thread function)
+ * Decrements the delay timer approximately 60 times/second.
+ */
+int delay_timer(Chip** chip) {
+    //TODO:
+}
+
+/* sound_timer (thread function)
+ * Decrements the sound timer approximately 60 times/second. Produces a beep when timer > 0.
+ */
+int sound_timer(Chip** chip) {
+    //TODO:
 }

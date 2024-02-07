@@ -59,7 +59,8 @@ int test1() {
  * Executes all of the tests and returns information on how many passed.
  */
 int main() {
-    int num_tests_passed, test_result;
+    int num_tests_passed = 0;
+    int test_result;
 
     clock_t start, end;
     double cpu_time_used;
