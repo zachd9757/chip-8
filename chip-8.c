@@ -49,14 +49,18 @@ void chip_init(Chip** chip) {
         (*chip)->stack->values[i] = STACK_EMPTY;
     }
 
+    //TODO: timers
     // Initialize timers
-    pthread_mutex_init((*chip)->dt_mutex, NULL);
-    pthread_mutex_init((*chip)->st_mutex, NULL);
-    //TODO: error check mutex inits
+    if (pthread_mutex_init(&(*chip)->dt_mutex, NULL) != 0) { perror("Error initializing dt_mutex "); }
+    if (pthread_mutex_init(&(*chip)->dt_mutex, NULL) != 0) { perror("Error initializing dt_mutex "); }
+    
     (*chip)->dt = 0;
     (*chip)->st = 0;
 
-    //TODO: create threads
+    // Initialize threads to operate timers
+    pthread_t dt_thread, st_thread;
+    pthread_create(dt_thread, NULL, delay_timer, chip);
+    pthread_create(st_thread, NULL, sound_timer, chip);
 }
 
 /* stack_pop
