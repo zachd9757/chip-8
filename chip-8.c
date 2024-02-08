@@ -1,4 +1,5 @@
 // Author: Zach DeShaw
+// chip-8.c - Defines the behavior of struct CHIP8 (typedef Chip) and its interior structs.
 // A CHIP-8 interpreter based on this guide: https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 // Specification reference: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
 
@@ -49,18 +50,9 @@ void chip_init(Chip** chip) {
         (*chip)->stack->values[i] = STACK_EMPTY;
     }
 
-    //TODO: timers
-    // Initialize timers
-    if (pthread_mutex_init(&(*chip)->dt_mutex, NULL) != 0) { perror("Error initializing dt_mutex "); }
-    if (pthread_mutex_init(&(*chip)->dt_mutex, NULL) != 0) { perror("Error initializing dt_mutex "); }
-    
+    // Timers
     (*chip)->dt = 0;
     (*chip)->st = 0;
-
-    // Initialize threads to operate timers
-    pthread_t dt_thread, st_thread;
-    pthread_create(dt_thread, NULL, delay_timer, chip);
-    pthread_create(st_thread, NULL, sound_timer, chip);
 }
 
 /* stack_pop
@@ -96,18 +88,4 @@ int stack_push(Stack** stack, uint16_t value) {
 
     // Stack overflow
     return -1;
-}
-
-/* delay_timer (thread function)
- * Decrements the delay timer approximately 60 times/second.
- */
-int delay_timer(Chip** chip) {
-    //TODO:
-}
-
-/* sound_timer (thread function)
- * Decrements the sound timer approximately 60 times/second. Produces a beep when timer > 0.
- */
-int sound_timer(Chip** chip) {
-    //TODO:
 }

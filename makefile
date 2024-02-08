@@ -1,7 +1,11 @@
-# run tests
-run: test.c chip-8.c
-	gcc -o chip test.c chip-8.c
+run: main.c chip-8.c
+	gcc -o chip main.c chip-8.c
 	./chip
+
+# run tests
+test: test.c chip-8.c
+	gcc -o chip test.c chip-8.c
+	./test-chip
 
 # debug
 d: test.c chip-8.c
@@ -9,4 +13,4 @@ d: test.c chip-8.c
 	gdb chip
 
 clean:
-	rm chip
+	rm chip test-chip *.out
